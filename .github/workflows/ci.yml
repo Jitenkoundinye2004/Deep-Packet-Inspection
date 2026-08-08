@@ -1,0 +1,45 @@
+name: Packet Analyzer CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+        cache-dependency-path: |
+          server/package-lock.json
+          client/package-lock.json
+
+    - name: Install Server Dependencies
+      run: |
+        cd server
+        npm install
+
+    - name: Run Server Tests
+      run: |
+        cd server
+        # Run tests with mock fallback mode active to pass without actual database servers
+        npm test
+
+    - name: Install Client Dependencies
+      run: |
+        cd client
+        npm install
+
+    - name: Build Client (Vite Compile)
+      run: |
+        cd client
+        npm run build
