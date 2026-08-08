@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import io from 'socket.io-client';
+import { api, connectSocket } from '../utils/api.js';
 import { Upload, Layers, ShieldCheck, ShieldAlert, ChevronRight, Eye, Search, AlertCircle, FileCode } from 'lucide-react';
 
 function Packets() {
@@ -18,7 +17,7 @@ function Packets() {
   const { data: flows, isLoading: isLoadingFlows, refetch: refetchFlows } = useQuery({
     queryKey: ['flows'],
     queryFn: async () => {
-      const res = await axios.get('/api/flows');
+      const res = await api.get('/api/flows');
       return res.data;
     }
   });
@@ -28,7 +27,7 @@ function Packets() {
     queryKey: ['packets', selectedFlow?.flowId],
     queryFn: async () => {
       if (!selectedFlow) return [];
-      const res = await axios.get(`/api/packets?flowId=${selectedFlow.flowId}`);
+      const res = await api.get(`/api/packets?flowId=${selectedFlow.flowId}`);
       return res.data;
     },
     enabled: !!selectedFlow
@@ -36,7 +35,7 @@ function Packets() {
 
   // Socket connection for live progress and refresh trigger
   useEffect(() => {
-    const socket = io('/', { path: '/socket.io' });
+    const socket = connectSocket();
 
     socket.on('pcap:progress', (data) => {
       setLiveProgress(data.progress);
@@ -66,7 +65,7 @@ function Packets() {
     mutationFn: async (file) => {
       const formData = new FormData();
       formData.append('pcap', file);
-      const res = await axios.post('/api/upload', formData, {
+      const res = await api.post('/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       return res.data;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import io from 'socket.io-client';
+import { api, connectSocket } from '../utils/api.js';
 import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Activity, ShieldCheck, ShieldAlert, Database, HelpCircle, HardDrive, RefreshCw } from 'lucide-react';
 
@@ -16,15 +15,15 @@ function Dashboard() {
   const { data: dbStats, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ['stats'],
     queryFn: async () => {
-      const res = await axios.get('/api/stats');
+      const res = await api.get('/api/stats');
       return res.data;
     }
   });
 
   // Socket connection for live progress updates
   useEffect(() => {
-    // Connect to Socket.IO proxy
-    const socket = io('/', { path: '/socket.io' });
+    // Connect to Socket.IO using centralized connectSocket helper
+    const socket = connectSocket();
 
     socket.on('connect', () => {
       console.log('Socket connected for live updates');

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '../utils/api.js';
 import { ShieldCheck, ShieldAlert, Plus, Trash2, Globe, Laptop, Server, AlertCircle } from 'lucide-react';
 
 function Rules() {
@@ -13,7 +13,7 @@ function Rules() {
   const { data: rules, isLoading } = useQuery({
     queryKey: ['rules'],
     queryFn: async () => {
-      const res = await axios.get('/api/rules');
+      const res = await api.get('/api/rules');
       return res.data;
     }
   });
@@ -21,7 +21,7 @@ function Rules() {
   // 2. Add Rule Mutation
   const addMutation = useMutation({
     mutationFn: async (newRule) => {
-      const res = await axios.post('/api/rules', newRule);
+      const res = await api.post('/api/rules', newRule);
       return res.data;
     },
     onSuccess: () => {
@@ -37,7 +37,7 @@ function Rules() {
   // 3. Delete Rule Mutation
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await axios.delete(`/api/rules/${id}`);
+      const res = await api.delete(`/api/rules/${id}`);
       return res.data;
     },
     onSuccess: () => {
