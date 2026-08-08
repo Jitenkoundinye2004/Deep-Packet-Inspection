@@ -1,0 +1,10 @@
+{
+  "name": "packet-analyzer-root",
+  "version": "1.0.0",
+  "description": "Root orchestrator for Packet Analyzer MERN stack",
+  "scripts": {
+    "install-all": "npm install --prefix server && npm install --prefix client",
+    "start": "npm start --prefix server",
+    "build-client": "npm run build --prefix client"
+  }
+}
