@@ -1,18 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
-import { Activity, ShieldAlert, Cpu, Layers } from 'lucide-react';
+import { Activity, ShieldAlert, Cpu, Layers, Menu, X } from 'lucide-react';
 import Dashboard from './pages/Dashboard.jsx';
 import Packets from './pages/Packets.jsx';
 import Rules from './pages/Rules.jsx';
 
 function App() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen bg-transparent">
+    <div className="flex min-h-screen bg-transparent flex-col md:flex-row">
+      {/* Mobile Top Header */}
+      <header className="md:hidden h-16 glass-panel border-b border-borderBg flex items-center justify-between px-6 z-30 shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="p-1.5 bg-indigo-600 rounded text-white glow-indigo">
+            <Cpu size={18} />
+          </div>
+          <div>
+            <span className="font-extrabold text-sm bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">DPI ENGINE</span>
+            <span className="text-[8px] text-slate-400 font-mono tracking-widest uppercase block -mt-1">Deep Packet Inspector</span>
+          </div>
+        </div>
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 text-slate-400 hover:text-white hover:bg-slate-800/40 rounded-lg transition"
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </header>
+
+      {/* Backdrop for Mobile Drawer */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar Navigation */}
-      <aside className="w-64 glass-panel border-r border-borderBg flex flex-col justify-between shrink-0">
+      <aside className={`
+        fixed md:relative inset-y-0 left-0 w-64 glass-panel border-r border-borderBg flex flex-col justify-between shrink-0 z-50 transform md:transform-none transition-transform duration-250 ease-in-out h-full
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
         <div>
-          {/* Brand/Logo */}
-          <div className="p-6 flex items-center gap-3 border-b border-borderBg">
+          {/* Brand/Logo - Desktop version */}
+          <div className="p-6 md:flex items-center gap-3 border-b border-borderBg hidden">
             <div className="p-2 bg-indigo-600 rounded-lg glow-indigo text-white">
               <Cpu size={24} />
             </div>
@@ -26,6 +59,7 @@ function App() {
           <nav className="p-4 space-y-2">
             <NavLink
               to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
@@ -40,6 +74,7 @@ function App() {
 
             <NavLink
               to="/packets"
+              onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
@@ -54,6 +89,7 @@ function App() {
 
             <NavLink
               to="/rules"
+              onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
@@ -77,7 +113,7 @@ function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 glass-panel border-b border-borderBg flex items-center justify-between px-8 z-10">
+        <header className="h-16 glass-panel border-b border-borderBg flex items-center justify-between px-6 md:px-8 z-10">
           <div className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-glowEmerald animate-pulse"></span>
             <span className="text-xs font-mono text-slate-400">DPI ENGINE ACTIVE</span>
@@ -88,7 +124,7 @@ function App() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-4 md:p-8">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/packets" element={<Packets />} />

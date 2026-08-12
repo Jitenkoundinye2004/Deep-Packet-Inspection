@@ -175,15 +175,15 @@ function Packets() {
 
         {/* Flows Table */}
         <div className="glass-panel rounded-xl overflow-hidden">
-          <div className="p-6 border-b border-borderBg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="p-4 sm:p-6 border-b border-borderBg flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div>
               <h3 className="text-lg font-bold text-white">Tracked Connections</h3>
               <p className="text-xs text-slate-400">Bidirectional conversations parsed from network headers</p>
             </div>
             
             {/* Filter and Search Bar */}
-            <div className="flex items-center gap-3 w-full md:w-auto">
-              <div className="relative flex-1 md:w-64">
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+              <div className="relative w-full sm:flex-1 md:w-64">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
@@ -197,7 +197,7 @@ function Packets() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-1.5 glass-input rounded-lg text-xs text-slate-200"
+                className="w-full sm:w-auto px-3 py-1.5 glass-input rounded-lg text-xs text-slate-200"
               >
                 <option value="all">All States</option>
                 <option value="forwarded">Forwarded</option>
@@ -212,7 +212,7 @@ function Packets() {
             ) : filteredFlows?.length === 0 ? (
               <div className="p-12 text-center text-slate-500 text-xs font-mono">No network streams found</div>
             ) : (
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[700px]">
                 <thead>
                   <tr className="border-b border-borderBg bg-slate-950/20 text-slate-400 text-[10px] font-mono uppercase tracking-wider">
                     <th className="p-4">Flow ID / Source IP</th>

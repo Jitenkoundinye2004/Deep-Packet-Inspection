@@ -120,15 +120,15 @@ function Dashboard() {
       )}
 
       {/* Header and Refresh */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">Security & Protocol Dashboard</h2>
-          <p className="text-slate-400 text-sm">Real-time deep packet inspection metrics and bandwidth statistics</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Security & Protocol Dashboard</h2>
+          <p className="text-slate-400 text-xs sm:text-sm">Real-time deep packet inspection metrics and bandwidth statistics</p>
         </div>
         <button
           onClick={() => refetch()}
           disabled={isRefetching || liveProgress !== null}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-900/80 border border-borderBg rounded-lg text-sm text-slate-300 hover:bg-slate-800 transition disabled:opacity-40"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-900/80 border border-borderBg rounded-lg text-sm text-slate-300 hover:bg-slate-800 transition disabled:opacity-40 w-full sm:w-auto"
         >
           <RefreshCw size={16} className={isRefetching ? 'animate-spin' : ''} />
           {isRefetching ? 'Reloading...' : 'Sync Stats'}

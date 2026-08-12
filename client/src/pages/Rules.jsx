@@ -157,12 +157,12 @@ function Rules() {
 
       {/* Column 2: Active Rules List (span 2) */}
       <div className="lg:col-span-2 glass-panel rounded-xl overflow-hidden">
-        <div className="p-6 border-b border-borderBg flex justify-between items-center">
+        <div className="p-6 border-b border-borderBg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h3 className="text-lg font-bold text-white">Active Firewall Rules</h3>
             <p className="text-xs text-slate-400">Live blocking rules enforced by the DPI core engine</p>
           </div>
-          <span className="px-2.5 py-1 bg-slate-900 border border-borderBg rounded-full text-[10px] font-mono text-slate-400">
+          <span className="px-2.5 py-1 bg-slate-900 border border-borderBg rounded-full text-[10px] font-mono text-slate-400 w-fit">
             {rules?.length || 0} Rules Configured
           </span>
         </div>
